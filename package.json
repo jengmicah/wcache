@@ -1,11 +1,29 @@
 {
   "name": "webcache",
   "version": "1.0.0",
-  "description": "",
+  "description": "A lightweight web storage cache with automatic key expiry.",
+  "keywords": [
+    "localStorage",
+    "sessionStorage",
+    "json",
+    "namespace",
+    "store",
+    "cache"
+  ],
+  "author": {
+    "name": "Micah Jeng"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jengmicah/webcache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jengmicah/webcache/issues"
+  },
+  "homepage": "https://github.com/jengmicah/webcache#readme",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
   "license": "ISC"
 }
