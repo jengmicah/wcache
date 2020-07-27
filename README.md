@@ -82,7 +82,7 @@ cache.getAll(); // { key1: "value1", key2: "value2" }
 // Remove entry by key
 cache.removeKey("key1"); // "value1"
 // Remove entry by value
-cache.removeValue("value2"); // "value2"
+cache.removeValue("value2"); // "key2"
 // Get value from nonexistent key
 cache.get("key1"); // null
 ```
