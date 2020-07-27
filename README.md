@@ -16,7 +16,7 @@ The configurable parameters upon initialization are the following:
 2. `cleanupTimer`: frequency of key expiry cleanup in seconds (default: `30`)
 
 ```js
-webcache({
+const cache = webcache({
   store: "localStorage",
   cleanupTimer: 30,
 });
