@@ -34,31 +34,32 @@ module.exports = function ({
             all[key] = get(key);
         return all;
     }
-    const set = (key, value, expireSeconds) => {
-        storage.setItem(key, JSON.stringify({
-            expire: expireSeconds ? Number(new Date()) + (expireSeconds * 1000) : null,
-            value: value
-        }));
+    const set = (key, value, overwrite = false, ttl = null) => {
+        if (!has(key) || overwrite) {
+            storage.setItem(key, JSON.stringify({
+                expire: ttl ? Number(new Date()) + (ttl * 1000) : null,
+                value: value
+            }));
+        }
     }
-    const setAll = (data, overwrite = false) => {
+    const setAll = (data, overwrite = false, ttl = null) => {
         for (const [k, v] of Object.entries(data)) {
-            if (!has(k) || overwrite)
-                set(k, v);
+            set(k, v, overwrite, ttl);
         }
     }
     const has = (key) => get(key) ? true : false;
 
-    const remove = (key) => {
+    const removeKey = (key) => {
         const val = get(key);
         storage.removeItem(key);
         return val;
     }
-    const removeEqual = (val) => {
+    const removeValue = (val) => {
         let keys = [];
         Object.keys(storage).map((k) => {
             if (get(k) === val) {
                 keys.push(k);
-                remove(k);
+                removeKey(k);
             }
         })
         return keys;
@@ -67,8 +68,10 @@ module.exports = function ({
     const clear = () => storage.clear();
 
     const iterate = (fn) => {
-        for (const key in { ...storage })
-            fn(key, get(key));
+        for (const key in { ...storage }) {
+            const res = fn(key, get(key));
+            if (!res && res !== undefined) break;
+        }
     }
 
     const cleanup = () => {
@@ -76,7 +79,7 @@ module.exports = function ({
         for (const key in { ...storage }) {
             const item = JSON.parse(storage.getItem(key));
             if (item && item.expire && now > item.expire)
-                remove(key)
+                removeKey(key)
         };
     }
 
@@ -84,15 +87,15 @@ module.exports = function ({
     setInterval(cleanup, cleanupTimer * 1000);
 
     return {
-        keys,
-        size,
         get,
         getAll,
-        has,
         set,
         setAll,
-        remove,
-        removeEqual,
+        removeKey,
+        removeValue,
+        size,
+        keys,
+        has,
         clear,
         cleanup,
         iterate
