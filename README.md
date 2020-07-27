@@ -13,7 +13,7 @@ A flexible web storage cache with automatic key expiry.
 The configurable parameters upon initialization are the following:
 
 1. `store`: type of web storage (default: `sessionStorage`)
-2. `cleanupTimer`: frequency of key expiry cleanup in seconds (default: `30`)
+2. `cleanupTimer`: frequency of key expiry cleanup in seconds (default: `15`)
 
 ```js
 const cache = webcache({
