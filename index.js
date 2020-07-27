@@ -22,6 +22,8 @@ module.exports = function ({
         return null;
     }
 
+    const keys = () => Object.keys(storage);
+    const size = () => keys().length;
     const get = (key) => {
         const obj = storage.getItem(key);
         return obj && JSON.parse(obj).value;
@@ -32,19 +34,42 @@ module.exports = function ({
             all[key] = get(key);
         return all;
     }
-    const has = (key) => {
-        const obj = storage.getItem(key);
-        return obj ? true : false;
-    }
     const set = (key, value, expireSeconds) => {
         storage.setItem(key, JSON.stringify({
             expire: expireSeconds ? Number(new Date()) + (expireSeconds * 1000) : null,
             value: value
         }));
     }
-    const remove = (key) => storage.removeItem(key);
+    const setAll = (data, overwrite = false) => {
+        for (const [k, v] of Object.entries(data)) {
+            if (!has(k) || overwrite)
+                set(k, v);
+        }
+    }
+    const has = (key) => get(key) ? true : false;
+
+    const remove = (key) => {
+        const val = get(key);
+        storage.removeItem(key);
+        return val;
+    }
+    const removeEqual = (val) => {
+        let keys = [];
+        Object.keys(storage).map((k) => {
+            if (get(k) === val) {
+                keys.push(k);
+                remove(k);
+            }
+        })
+        return keys;
+    };
 
     const clear = () => storage.clear();
+
+    const iterate = (fn) => {
+        for (const key in { ...storage })
+            fn(key, get(key));
+    }
 
     const cleanup = () => {
         const now = Number(new Date());
@@ -59,13 +84,17 @@ module.exports = function ({
     setInterval(cleanup, cleanupTimer * 1000);
 
     return {
+        keys,
+        size,
         get,
         getAll,
         has,
         set,
+        setAll,
         remove,
+        removeEqual,
         clear,
         cleanup,
-        isSupported
+        iterate
     };
 };
