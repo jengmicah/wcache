@@ -1,11 +1,15 @@
 # wcache
 
+[![npm version](https://badge.fury.io/js/wcache.svg)](https://badge.fury.io/js/wcache)
+[![install size](https://packagephobia.com/badge?p=wcache)](https://packagephobia.com/result?p=wcache)
+
 A flexible, general-purpose web storage cache with automatic key expiry and namespace support.
 
 ## Features
 
 - Easy data access and modification
   - Query by key and by value
+- Lightweight
 - Automatic key expiry with a customizable cleanup interval
 - Configurable storage (`sessionStorage` and `localStorage`)
 - Segmented shared storage using namespaces
