@@ -35,7 +35,7 @@ The cache itself can be modified with the following functions:
 ```js
 cache.get(key);                      // returns parsed data stored under key
 cache.getAll();                      // returns all stored key/value pairs as an object
-cache.set(data[, overwrite[, ttl]]); // assigns all keys to values in the data object with expire time in seconds
+cache.set(data[, overwrite[, ttl]]); // assigns all keys to values in the data object with expire time
 cache.removeKey(key);                // removes entries with the key, returns the value
 cache.removeValue(value);            // removes entries with the value, returns list of keys
 cache.iterate((k, v) => {});         // call function on each key/value pair, return false to exit
@@ -53,6 +53,8 @@ cache.cleanup();                     // manually removes all expired entries
 const cache = webcache({
   store: "sessionStorage",
   cleanupTimer: 30,
+  namespace: "my_project",
+  allowDuplicateNamespaces: false,
 });
 ```
 
