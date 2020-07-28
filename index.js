@@ -21,12 +21,12 @@ module.exports = function ({
         console.error(`Web store "${store}" is not available.`);
         return null;
     }
-
-    const keys = () => Object.keys(storage);
-    const size = () => keys().length;
     const get = (key) => {
-        const obj = storage.getItem(key);
-        return obj && JSON.parse(obj).value;
+        const item = JSON.parse(storage.getItem(key));
+        if (item) {
+            if (item.expiry && Number(new Date()) > item.expiry) return null;
+            return item.value;
+        }
     }
     const getAll = () => {
         let all = {};
@@ -37,7 +37,7 @@ module.exports = function ({
     const set = (key, value, overwrite = false, ttl = null) => {
         if (!has(key) || overwrite) {
             storage.setItem(key, JSON.stringify({
-                expire: ttl ? Number(new Date()) + (ttl * 1000) : null,
+                expiry: ttl ? Number(new Date()) + (ttl * 1000) : null,
                 value: value
             }));
         }
@@ -47,8 +47,6 @@ module.exports = function ({
             set(k, v, overwrite, ttl);
         }
     }
-    const has = (key) => get(key) ? true : false;
-
     const removeKey = (key) => {
         const val = get(key);
         storage.removeItem(key);
@@ -64,24 +62,24 @@ module.exports = function ({
         })
         return keys;
     };
-
-    const clear = () => storage.clear();
-
     const iterate = (fn) => {
         for (const key in { ...storage }) {
             const res = fn(key, get(key));
             if (!res && res !== undefined) break;
         }
     }
-
     const cleanup = () => {
         const now = Number(new Date());
         for (const key in { ...storage }) {
             const item = JSON.parse(storage.getItem(key));
-            if (item && item.expire && now > item.expire)
-                removeKey(key)
+            if (item && item.expiry && now > item.expiry)
+                removeKey(key);
         };
     }
+    const keys = () => Object.keys(storage);
+    const size = () => keys().length;
+    const has = (key) => get(key) ? true : false;
+    const clear = () => storage.clear();
 
     cleanup();
     setInterval(cleanup, cleanupTimer * 1000);
@@ -93,11 +91,11 @@ module.exports = function ({
         setAll,
         removeKey,
         removeValue,
-        size,
+        cleanup,
+        iterate,
         keys,
+        size,
         has,
         clear,
-        cleanup,
-        iterate
     };
 };
