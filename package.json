@@ -1,26 +1,26 @@
 {
-  "name": "webcache",
+  "name": "wcache",
   "version": "1.0.0",
-  "description": "A lightweight web storage cache with automatic key expiry.",
+  "description": "A flexible, general-purpose web storage cache with automatic key expiry and namespace support.",
   "keywords": [
     "localStorage",
     "sessionStorage",
-    "json",
     "namespace",
     "store",
-    "cache"
+    "cache",
+    "webstorage"
   ],
   "author": {
     "name": "Micah Jeng"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jengmicah/webcache.git"
+    "url": "https://github.com/jengmicah/wcache.git"
   },
   "bugs": {
-    "url": "https://github.com/jengmicah/webcache/issues"
+    "url": "https://github.com/jengmicah/wcache/issues"
   },
-  "homepage": "https://github.com/jengmicah/webcache#readme",
+  "homepage": "https://github.com/jengmicah/wcache#readme",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

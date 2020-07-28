@@ -1,6 +1,6 @@
-# webcache
+# wcache
 
-A flexible web storage cache with automatic key expiry and namespaces.
+A flexible, general-purpose web storage cache with automatic key expiry and namespace support.
 
 ## Features
 
@@ -9,7 +9,6 @@ A flexible web storage cache with automatic key expiry and namespaces.
 - Automatic key expiry with a customizable cleanup interval
 - Configurable storage (`sessionStorage` and `localStorage`)
 - Segmented shared storage using namespaces
-  - Note that `localStorage` is unique per origin (`protocol://host:port`)
 
 ## Documentation
 
@@ -22,7 +21,7 @@ The configurable parameters upon initialization are the following:
 
 ```js
 // defaults
-const cache = webcache({
+const cache = wcache({
   store: "sessionStorage",
   cleanupTimer: 15,
   namespace: "ns1",
@@ -50,7 +49,7 @@ cache.cleanup();                     // manually removes all expired entries
 ## Examples
 
 ```js
-const cache = webcache({
+const cache = wcache({
   store: "sessionStorage",
   cleanupTimer: 30,
   namespace: "my_project",
