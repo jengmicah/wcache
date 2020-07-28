@@ -9,7 +9,7 @@ A flexible, general-purpose web storage cache with automatic key expiry and name
 
 - Easy data access and modification
   - Query by key and by value
-- Lightweight
+- Lightweight (~11 kB)
 - Automatic key expiry with a customizable cleanup interval
 - Configurable storage (`sessionStorage` and `localStorage`)
 - Segmented shared storage using namespaces
@@ -33,7 +33,7 @@ const cache = wcache({
 });
 ```
 
-The cache itself can be modified with the following functions:
+The cache itself can be accessed and modified with the following functions:
 
 ```js
 cache.get(key);                      // returns parsed data stored under key
@@ -51,6 +51,10 @@ cache.cleanup();                     // manually removes all expired entries
 ```
 
 ## Examples
+
+```js
+npm install wcache
+```
 
 ```js
 const cache = wcache({
